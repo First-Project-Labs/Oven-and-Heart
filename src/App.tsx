@@ -103,6 +103,36 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('birthday');
 
+  // SEO Meta Handling
+  useEffect(() => {
+    document.title = "Oven and Heart | Homemade Birthday & Custom Cakes | Bakery in India";
+    
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const description = "Oven and Heart - Premium homemade birthday cakes, wedding cakes, and custom desserts in India. Order delicious handcrafted cakes online for all your celebrations. Best bakery for custom cakes.";
+    
+    if (metaDescription) {
+      metaDescription.setAttribute('content', description);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = description;
+      document.head.appendChild(meta);
+    }
+
+    // Additional SEO meta tags
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    const keywords = "oven and heart, birthday cakes, custom cakes, wedding cakes, homemade cakes, bakery in India, dessert delivery, celebration cakes, premium bakery";
+    
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', keywords);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'keywords';
+      meta.content = keywords;
+      document.head.appendChild(meta);
+    }
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -156,6 +186,22 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen">
+      {/* Invisible SEO Content Block - Screen Reader Only */}
+      <div className="sr-only" aria-hidden="false">
+        <h1>Oven and Heart | Homemade Cakes & Desserts</h1>
+        <p>
+          Oven and Heart is a premium home bakery specializing in homemade birthday cakes, 
+          wedding cakes, custom celebration cakes, and artisanal desserts. 
+          We create delicious handcrafted cakes using premium ingredients and traditional techniques.
+          Our bakery serves customers across India with personalized cake designs for every occasion.
+        </p>
+        <p>
+          Explore our collection of birthday cakes, wedding cakes, custom cakes, 
+          anniversary cakes, and special occasion desserts. Order online for delivery 
+          or pickup from our home bakery in India.
+        </p>
+      </div>
+
       {/* Header */}
       <header className={`fixed top-0 left-0 w-full z-[80] transition-all duration-300 ${scrolled ? 'glass-nav py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -237,7 +283,7 @@ export default function App() {
         <div className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?q=80&w=1920&auto=format&fit=crop" 
-            alt="Hero Cake - Premium Studio Lighting" 
+            alt="Oven and Heart - Premium Homemade Birthday Cake" 
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover"
           />
@@ -255,8 +301,7 @@ export default function App() {
               Artisanal Home Bakery
             </span>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[1.1]">
-              Baked with Love, <br />
-              <span className="text-brand-accent italic font-medium">Designed for Your</span> Moments
+              Oven and Heart | Homemade Cakes & Desserts
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-lg leading-relaxed">
               Custom cakes for birthdays, weddings, and every celebration. Premium ingredients, studio design, and handcrafted flavors.
@@ -281,6 +326,23 @@ export default function App() {
         </div>
       </section>
 
+      {/* Keyword Context Section */}
+      <section className="py-16 bg-gradient-to-r from-brand-pink/10 to-brand-cream/30" aria-label="Services Overview">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">🎂 Birthday Cakes</span>
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">💍 Wedding Cakes</span>
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">✨ Custom Cakes</span>
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">🎨 Designer Cakes</span>
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">🏠 Homemade Bakery</span>
+            <span className="px-4 py-2 bg-white rounded-full text-brand-text font-medium shadow-sm">🇮🇳 Bakery in India</span>
+          </div>
+          <p className="mt-6 text-brand-muted max-w-2xl mx-auto">
+            Serving cake lovers across India with premium homemade birthday cakes, wedding cakes, and custom-designed celebration cakes
+          </p>
+        </div>
+      </section>
+
       {/* Categories Section with Filter */}
       <section id="categories" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -295,6 +357,7 @@ export default function App() {
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full bg-brand-cream border-2 border-brand-pink rounded-2xl py-4 px-6 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-accent/20 font-medium text-brand-text shadow-sm transition-all text-lg"
+                aria-label="Select cake category"
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat.id} value={cat.id}>{cat.title}</option>
@@ -350,7 +413,7 @@ export default function App() {
               <div className="w-full md:w-1/2">
                 <img 
                   src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop" 
-                  alt="Our Kitchen" 
+                  alt="Oven and Heart home bakery kitchen - crafting homemade cakes in India" 
                   className="rounded-[3rem] shadow-2xl"
                   referrerPolicy="no-referrer"
                 />
@@ -466,7 +529,7 @@ export default function App() {
               </div>
             </div>
             <div className="pt-12 border-t border-white/10 text-center text-white/40 text-sm">
-              &copy; {new Date().getFullYear()} Oven and Heart.
+              &copy; {new Date().getFullYear()} Oven and Heart. Premium homemade cakes in India.
             </div>
          </div>
       </footer>
