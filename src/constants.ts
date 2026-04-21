@@ -43,7 +43,7 @@ export const CAKES: Cake[] = [
     name: 'Strawberry Cloud',
     description: 'A light, fluffy vanilla cake layered with fresh strawberry compote and whipped cream frost.',
     price: 999,
-    image: 'images/Strawberry.png',
+    image: '/images/Strawberry.png',
     category: 'birthday'
   },
   {
