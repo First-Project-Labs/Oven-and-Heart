@@ -37,7 +37,7 @@ import { CartItem, Cake } from './types';
 
 const FloatingWhatsApp = () => (
   <motion.a
-    href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`}
+    href={`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}`}
     target="_blank"
     rel="noreferrer"
     initial={{ scale: 0, opacity: 0 }}
@@ -68,7 +68,7 @@ const CakeCard = ({ cake, onAddToCart }: { cake: Cake; onAddToCart: (cake: Cake)
            <button 
             onClick={(e) => {
               e.stopPropagation();
-              window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=Hi! I'm interested in the ${cake.name}.`, '_blank');
+              window.open(`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi! I'm interested in the ${cake.name}.`)}`, '_blank');
             }}
             className="p-2 bg-white/90 backdrop-blur rounded-full text-[#25D366] shadow-lg hover:bg-[#25D366] hover:text-white transition-colors"
            >
@@ -139,10 +139,20 @@ export default function App() {
   const checkoutWhatsApp = () => {
     const items = cart.map(item => `${item.name} x ${item.quantity} (₹${item.price * item.quantity})`).join('\n');
     const message = encodeURIComponent(`Hi ${BRAND_NAME}!\n\nI'd like to place an order:\n\n${items}\n\nTotal: ₹${totalPrice}\n\nPlease confirm my order!`);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
+    window.open(`https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
+  };
+
+  const openWhatsApp = (text?: string) => {
+    const url = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+    window.open(url, '_blank');
   };
 
   const filteredCakes = useMemo(() => CAKES.filter(cake => cake.category === selectedCategory), [selectedCategory]);
+
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    document.getElementById('categories')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const NavLink = ({ href, children, mobile }: { href: string; children: ReactNode; mobile?: boolean }) => (
     <a 
@@ -186,7 +196,7 @@ export default function App() {
             <Button 
               variant="primary" 
               className="hidden md:flex py-2 px-6"
-              onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`, '_blank')}
+              onClick={() => openWhatsApp()}
             >
               Order on WhatsApp
             </Button>
@@ -223,7 +233,7 @@ export default function App() {
               <Button 
                 variant="primary" 
                 className="w-full text-lg py-4"
-                onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`, '_blank')}
+                onClick={() => openWhatsApp()}
               >
                 Order on WhatsApp
               </Button>
@@ -272,7 +282,7 @@ export default function App() {
               <Button 
                 variant="secondary" 
                 className="text-lg py-4 px-10 bg-white/10 text-white backdrop-blur-md border-white/20"
-                onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`, '_blank')}
+                onClick={() => openWhatsApp()}
               >
                 Order via WhatsApp
               </Button>
@@ -368,7 +378,7 @@ export default function App() {
                   <Button 
                     variant="primary" 
                     className="px-10"
-                    onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=Hi! I want to share a custom idea.`, '_blank')}
+                    onClick={() => openWhatsApp('Hi! I want to share a custom idea.')}
                   >
                     Custom Theme Inquiry
                   </Button>
@@ -419,7 +429,7 @@ export default function App() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">WhatsApp</h3>
                 <p className="text-brand-muted">Instant Support</p>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`} className="text-brand-accent font-medium mt-auto hover:underline">Start Chat</a>
+                <button onClick={() => openWhatsApp()} className="text-brand-accent font-medium mt-auto hover:underline cursor-pointer">Start Chat</button>
              </div>
              <div className="bg-white p-8 rounded-3xl flex flex-col items-center text-center shadow-sm">
                 <div className="w-14 h-14 bg-brand-pink text-brand-accent rounded-full flex items-center justify-center mb-6">
@@ -443,16 +453,16 @@ export default function App() {
                 </p>
                 <div className="flex gap-4">
                   <a href="https://instagram.com/im_musthafa" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors"><Instagram size={20} /></a>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}`} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors"><MessageCircle size={20} /></a>
+                  <button onClick={() => openWhatsApp()} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-accent transition-colors cursor-pointer"><MessageCircle size={20} /></button>
                 </div>
               </div>
               <div>
                 <h4 className="text-lg font-bold mb-6">Our Menu</h4>
                 <div className="flex flex-col gap-4 text-white/60">
-                   <a href="#birthday" className="hover:text-brand-accent">Birthday Cakes</a>
-                   <a href="#wedding" className="hover:text-brand-accent">Wedding Specials</a>
-                   <a href="#cupcakes" className="hover:text-brand-accent">Mini Cupcakes</a>
-                   <a href="#flavours" className="hover:text-brand-accent">Exclusive Flavours</a>
+                   <button onClick={() => handleCategoryClick('birthday')} className="hover:text-brand-accent text-left cursor-pointer">Birthday Cakes</button>
+                   <button onClick={() => handleCategoryClick('wedding')} className="hover:text-brand-accent text-left cursor-pointer">Wedding Specials</button>
+                   <button onClick={() => handleCategoryClick('cupcakes')} className="hover:text-brand-accent text-left cursor-pointer">Mini Cupcakes</button>
+                   <button onClick={() => handleCategoryClick('flavours')} className="hover:text-brand-accent text-left cursor-pointer">Exclusive Flavours</button>
                 </div>
               </div>
               <div>
@@ -460,7 +470,7 @@ export default function App() {
                 <div className="flex flex-col gap-4 text-white/60">
                    <a href="#home" className="hover:text-brand-accent">Home</a>
                    <a href="#about" className="hover:text-brand-accent">About Us</a>
-                   <a href="#custom" className="hover:text-brand-accent">Custom Orders</a>
+                   <button onClick={() => handleCategoryClick('custom')} className="hover:text-brand-accent text-left cursor-pointer">Custom Orders</button>
                    <a href="#contact" className="hover:text-brand-accent">Contact</a>
                 </div>
               </div>
