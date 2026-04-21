@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useMemo, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ShoppingBag, 
@@ -143,6 +143,14 @@ export default function App() {
   };
 
   const filteredCakes = useMemo(() => CAKES.filter(cake => cake.category === selectedCategory), [selectedCategory]);
+
+  const handleCategoryClick = useCallback((id: string) => {
+    setSelectedCategory(id);
+    const element = document.getElementById('categories');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   const NavLink = ({ href, children, mobile }: { href: string; children: ReactNode; mobile?: boolean }) => (
     <a 
@@ -449,10 +457,10 @@ export default function App() {
               <div>
                 <h4 className="text-lg font-bold mb-6">Our Menu</h4>
                 <div className="flex flex-col gap-4 text-white/60">
-                   <a href="#birthday" className="hover:text-brand-accent">Birthday Cakes</a>
-                   <a href="#wedding" className="hover:text-brand-accent">Wedding Specials</a>
-                   <a href="#cupcakes" className="hover:text-brand-accent">Mini Cupcakes</a>
-                   <a href="#flavours" className="hover:text-brand-accent">Exclusive Flavours</a>
+                   <button onClick={() => handleCategoryClick('birthday')} className="hover:text-brand-accent text-left cursor-pointer transition-colors">Birthday Cakes</button>
+                   <button onClick={() => handleCategoryClick('wedding')} className="hover:text-brand-accent text-left cursor-pointer transition-colors">Wedding Specials</button>
+                   <button onClick={() => handleCategoryClick('cupcakes')} className="hover:text-brand-accent text-left cursor-pointer transition-colors">Mini Cupcakes</button>
+                   <button onClick={() => handleCategoryClick('flavours')} className="hover:text-brand-accent text-left cursor-pointer transition-colors">Exclusive Flavours</button>
                 </div>
               </div>
               <div>
@@ -460,7 +468,7 @@ export default function App() {
                 <div className="flex flex-col gap-4 text-white/60">
                    <a href="#home" className="hover:text-brand-accent">Home</a>
                    <a href="#about" className="hover:text-brand-accent">About Us</a>
-                   <a href="#custom" className="hover:text-brand-accent">Custom Orders</a>
+                   <button onClick={() => handleCategoryClick('custom')} className="hover:text-brand-accent text-left cursor-pointer transition-colors">Custom Orders</button>
                    <a href="#contact" className="hover:text-brand-accent">Contact</a>
                 </div>
               </div>
