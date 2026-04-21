@@ -69,7 +69,7 @@ export const CAKES: Cake[] = [
     name: 'Timeless White',
     description: 'Pure white three-tiered cake with delicate handcrafted sugar flowers.',
     price: 5499,
-    image: 'https://images.unsplash.com/photo-1522661081042-4c57cf3cff08?q=80&w=800&auto=format&fit=crop',
+    image: '/images/timeless.png',
     category: 'wedding'
   },
   {
@@ -85,7 +85,7 @@ export const CAKES: Cake[] = [
     name: 'Pearl Elegance',
     description: 'Lustre-finished tiered cake with edible pearl detailing.',
     price: 6499,
-    image: 'https://images.unsplash.com/photo-1502446654157-557343468812?q=80&w=800&auto=format&fit=crop',
+    image: '/images/pearl.png',
     category: 'wedding'
   },
 
@@ -139,7 +139,7 @@ export const CAKES: Cake[] = [
     name: 'Galaxy Theme',
     description: 'A stellar dark-themed cake with nebula-style marbling.',
     price: 1499,
-    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb8c2?q=80&w=800&auto=format&fit=crop',
+    image: '/images/galaxy.png',
     category: 'custom'
   },
   {
